@@ -1,5 +1,5 @@
 #pragma once
-#include "../controls/controls.h"
+#include "../parameters/controls.h"
 
 /// <summary>
 /// Core mathematical algorithm, which solves the problem: can given numer be decomposed into sum of different pows of 3.

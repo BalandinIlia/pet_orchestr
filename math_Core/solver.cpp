@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../controls/controls.h"
+#include "../parameters/controls.h"
 #include "solver.h"
 
 std::vector<number> solve(number n)

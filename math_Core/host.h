@@ -1,7 +1,7 @@
 #pragma once
 #include "map"
 #include "mutex"
-#include "../controls/controls.h"
+#include "../parameters/controls.h"
 
 /// <summary>
 /// This is a host, which keep manages the math part: all problem instances, all solutions and their caching.

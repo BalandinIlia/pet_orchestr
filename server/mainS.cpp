@@ -2,8 +2,8 @@
 #include "thread"
 #include "string"
 #include "sstream"
-#include "../networking/messages.h"
-#include "../networking/utils.h"
+#include "../networking_library/messages.h"
+#include "../networking_library/utils.h"
 #include "logger.h"
 #include "clientInstance.h"
 

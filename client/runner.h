@@ -5,8 +5,8 @@
 #include "mutex"
 #include "map"
 #include "chrono"
-#include "../networking/messages.h"
-#include "../networking/utils.h"
+#include "../networking_library/messages.h"
+#include "../networking_library/utils.h"
 
 // TP means "Time Point"
 typedef std::chrono::time_point<std::chrono::system_clock>::duration TP;

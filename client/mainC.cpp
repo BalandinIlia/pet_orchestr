@@ -1,7 +1,7 @@
 #include "winsock2.h"
 #include "iostream"
-#include "../networking/messages.h"
-#include "../networking/utils.h"
+#include "../networking_library/messages.h"
+#include "../networking_library/utils.h"
 #include "runner.h"
 
 int main()

@@ -21,12 +21,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "math_Core", "math_Core\math
 		{2205EB90-FCD4-47E6-987C-FDF9C69FDE97} = {2205EB90-FCD4-47E6-987C-FDF9C69FDE97}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking", "networking\networking.vcxproj", "{FBD5D8BF-1967-4031-9E91-EC8202523230}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "networking_library", "networking_library\networking_library.vcxproj", "{FBD5D8BF-1967-4031-9E91-EC8202523230}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2205EB90-FCD4-47E6-987C-FDF9C69FDE97} = {2205EB90-FCD4-47E6-987C-FDF9C69FDE97}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "controls", "controls\controls.vcxproj", "{2205EB90-FCD4-47E6-987C-FDF9C69FDE97}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parameters", "parameters\parameters.vcxproj", "{2205EB90-FCD4-47E6-987C-FDF9C69FDE97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
