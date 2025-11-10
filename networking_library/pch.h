@@ -12,6 +12,5 @@
 #include "vector"
 #include "map"
 #include "mutex"
-#include "winsock2.h"
 
 #endif //PCH_H

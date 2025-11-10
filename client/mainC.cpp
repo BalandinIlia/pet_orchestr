@@ -1,4 +1,3 @@
-#include "winsock2.h"
 #include "iostream"
 #include "../networking_library/messages.h"
 #include "../networking_library/utils.h"
@@ -6,18 +5,10 @@
 
 int main()
 {
-    CWSAConfig conf;
-
     // Tell the user they are running the client
     std::cout << "Client" << std::endl;
 
-    SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (idSocket == INVALID_SOCKET)
-    {
-        std::cerr << "Socket creation failed: " << WSAGetLastError() << "\n";
-        std::cin.get();
-        return 0;
-    }
+    int idSocket = socket(AF_INET, SOCK_STREAM, 0);
 
     sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET;

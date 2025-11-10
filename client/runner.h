@@ -1,5 +1,4 @@
 #pragma once
-#include "winsock2.h"
 #include "iostream"
 #include "thread"
 #include "mutex"
@@ -16,7 +15,7 @@ class CRunner
 {
 public:
 	// Create a runner on given (already established) socket
-	CRunner(SOCKET idS);
+	CRunner(int idS);
 
 	// Main functions: it runs interaction with the server
 	void run();
@@ -35,7 +34,7 @@ private:
 
 private:
 	// socket id
-	const SOCKET m_idSocket;
+	const int m_idSocket;
 
 	// A table with key, - request id and value, - request value
 	std::map<short, number> m_table;

@@ -1,4 +1,3 @@
-#include "winsock2.h"
 #include "thread"
 #include "string"
 #include "sstream"
@@ -9,19 +8,9 @@
 
 int main()
 {
-    CWSAConfig conf;
-
     log(std::string("Server"));
 
-    SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (idSocket == INVALID_SOCKET)
-    {
-        std::ostringstream mes;
-        mes << "Socket creation failed: " << WSAGetLastError();
-        log(mes.str());
-        Sleep(100000);
-        return 0;
-    }
+    int idSocket = socket(AF_INET, SOCK_STREAM, 0);
 
     sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET;
@@ -38,7 +27,7 @@ int main()
     int idClient = 1;
     for (;;)
     {
-        SOCKET conn = accept(idSocket, nullptr, nullptr);
+        int conn = accept(idSocket, nullptr, nullptr);
         std::thread t(serveClient, conn, idClient);
         idClient++;
         t.detach();

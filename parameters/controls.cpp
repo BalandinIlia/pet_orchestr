@@ -1,5 +1,5 @@
+#include "netinet/in.h"
 #include "pch.h"
-#include "winsock2.h"
 #include "controls.h"
 
 static_assert(sizeof(IPAddr) == 4, "wrong type for IP address");

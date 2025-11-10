@@ -12,6 +12,5 @@
 #include "map"
 #include "mutex"
 #include "array"
-#include "windows.h"
 
 #endif //PCH_H

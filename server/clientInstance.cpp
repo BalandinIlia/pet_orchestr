@@ -5,7 +5,7 @@
 #include "clientInstance.h"
 #include "../networking_library/messages.h"
 #include "../networking_library/utils.h"
-#include "../math_Core/host.h"
+#include "../math_core/host.h"
 
 /// <summary>
 /// This function solves a request from a particular client: it calculates the answer and sends it over TCP.
@@ -15,7 +15,7 @@
 /// <param name="idSocket"> in. Socket id </param>
 /// <param name="mutSocket"> in. Socket mutex: the mutex which need to be locked before sending data through socket </param>
 /// <param name="idClient"> in. Client id (for logging) </param>
-void solveCase(short id, number num, SOCKET idSocket, std::mutex* mutSocket, int idClient)
+void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int idClient)
 {
 	std::vector<number> aNum = CMathCoreHost::one().get(num);
 	// boolean flag saying if everything was sent successfully, or there was a connection error
@@ -48,7 +48,7 @@ void solveCase(short id, number num, SOCKET idSocket, std::mutex* mutSocket, int
 class CThreadClient
 {
 public:
-	CThreadClient(SOCKET idSocket, int idClient) : 
+	CThreadClient(int idSocket, int idClient) : 
 		m_idSocket(idSocket),
 		m_idClient(idClient)
 	{}
@@ -108,7 +108,7 @@ public:
 	}
 
 private:
-	SOCKET m_idSocket;
+	int m_idSocket;
 
 	int m_idClient;
 
@@ -118,7 +118,7 @@ private:
 	std::mutex m_mutSend;
 };
 
-void serveClient(SOCKET idSocket, int idClient)
+void serveClient(int idSocket, int idClient)
 {
 	{
 		const std::thread::id idThread = std::this_thread::get_id();
@@ -129,5 +129,5 @@ void serveClient(SOCKET idSocket, int idClient)
 
 	CThreadClient thr(idSocket, idClient);
 	thr.run();
-	closesocket(idSocket);
+	close(idSocket);
 }

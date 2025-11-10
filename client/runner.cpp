@@ -3,7 +3,7 @@
 
 std::mutex CRunner::m_mutCons;
 
-CRunner::CRunner(SOCKET idS) : m_idSocket(idS), m_id(1) {}
+CRunner::CRunner(int idS) : m_idSocket(idS), m_id(1) {}
 
 void CRunner::run()
 {

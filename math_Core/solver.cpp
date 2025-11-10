@@ -1,3 +1,4 @@
+#include "unistd.h"
 #include "pch.h"
 #include "../parameters/controls.h"
 #include "solver.h"
@@ -25,7 +26,7 @@ std::vector<number> solve(number n)
 		if (dig == 2)
 		{
 			ans.clear();
-			Sleep(delayAlgo);
+			sleep(delayAlgo);
 			return ans;
 		}
 		else if (dig == 1)
@@ -33,6 +34,6 @@ std::vector<number> solve(number n)
 		cnt *= 3;
 		n /= 3;
 	}
-	Sleep(delayAlgo);
+	sleep(delayAlgo);
 	return ans;
 }

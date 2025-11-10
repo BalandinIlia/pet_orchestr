@@ -2,7 +2,7 @@
 #include "mutex"
 
 // Ip address type
-typedef unsigned long IPAddr;
+typedef unsigned int IPAddr;
 // TCP port type
 typedef unsigned short TCPPort;
 // number type, - number used in the mathematical problem

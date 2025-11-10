@@ -1,20 +1,7 @@
 #include "pch.h"
 #include "utils.h"
 
-#pragma comment(lib, "ws2_32.lib")
-
-CWSAConfig::CWSAConfig()
-{
-    WSADATA wsaData;
-    WSAStartup(0x202, &wsaData);
-}
-
-CWSAConfig::~CWSAConfig()
-{
-    WSACleanup();
-}
-
-bool recvAll(SOCKET id, char* buf, int len)
+bool recvAll(int id, char* buf, int len)
 {
     int bytes = 0;
     while (len != 0)
@@ -29,7 +16,7 @@ bool recvAll(SOCKET id, char* buf, int len)
     return true;
 }
 
-bool sendAll(SOCKET id, char* buf, int len)
+bool sendAll(int id, char* buf, int len)
 {
     int bytes = 0;
     while (len != 0)
