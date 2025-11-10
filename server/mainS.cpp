@@ -5,9 +5,12 @@
 #include "../networking_library/utils.h"
 #include "logger.h"
 #include "clientInstance.h"
+#include "iostream"
 
 int main()
 {
+    std::cout << "hhhi" << std::endl;
+    
     log(std::string("Server"));
 
     int idSocket = socket(AF_INET, SOCK_STREAM, 0);
