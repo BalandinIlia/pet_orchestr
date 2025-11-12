@@ -42,7 +42,7 @@ private:
     static std::map<std::thread::id, std::pair<std::string, int>> m_map;
 
     static std::shared_mutex m_mut;
-}
+};
 
 static std::mutex mutCons;
 

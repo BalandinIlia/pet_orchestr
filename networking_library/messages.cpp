@@ -27,6 +27,7 @@ namespace MS
 		case 'c': return ETypeMes::eAnsYes;
 		default: return ETypeMes::eError;
 		}
+		return ETypeMes::eError;
 	}
 
 	int length(ETypeMes t)
@@ -38,6 +39,7 @@ namespace MS
 		case ETypeMes::eAnsYes: return -1;
 		case ETypeMes::eError: return -2;
 		}
+		return -2;
 	}
 
 	std::array<char, 11> serializeRequest(number req, short idRequest)
