@@ -1,7 +1,7 @@
 #include "thread"
 #include "sstream"
 #include "mutex"
-#include "logger.h"
+#include "../logger/logger.h"
 #include "clientInstance.h"
 #include "../networking_library/messages.h"
 #include "../networking_utils/send_receive.h"
