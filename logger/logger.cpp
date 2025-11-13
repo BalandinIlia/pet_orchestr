@@ -55,6 +55,9 @@ private:
     static std::shared_mutex m_mut;
 };
 
+std::map<std::thread::id, std::pair<std::string, int>> CThreadInfo::m_map;
+std::shared_mutex CThreadInfo::m_mut;
+
 // Mutex protecting the console (logs are outputted to the console)
 static std::mutex mutCons;
 
