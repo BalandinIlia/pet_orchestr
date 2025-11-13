@@ -26,7 +26,7 @@ jobs:
 
     - name: Build docker
       run: |
-        docker build network --platform linux/amd64 -t odin:dva
+        docker build . -f network --platform linux/amd64 -t odin:dva
         ls
 
     - name: Upload server application
