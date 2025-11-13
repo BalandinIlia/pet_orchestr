@@ -4,7 +4,7 @@
 #include "../networking_library/messages.h"
 #include "../networking_utils/send_receive.h"
 #include "../networking_utils/listen_socket.h"
-#include "logger.h"
+#include "../logger/logger.h"
 #include "clientInstance.h"
 
 int main()
