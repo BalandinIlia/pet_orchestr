@@ -1,0 +1,13 @@
+FROM: debian:stable
+
+WORKDIR /wd
+
+RUN apt update
+
+COPY ../executables/server /app/exec 
+
+RUN chmod +x /app/exec
+
+EXPOSE 40000
+
+ENTRYPOINT ["/app/exec"]

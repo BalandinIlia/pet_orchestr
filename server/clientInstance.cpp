@@ -17,7 +17,13 @@
 /// <param name="idClient"> in. Client id (for logging) </param>
 void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int idClient)
 {
-	std::vector<number> aNum = CMathCoreHost::one().get(num);
+	setThreadName("Case thread");
+	std::ostringstream mes;
+	mes << "Starting solving a case for number" << num;
+	log(mes.str());
+
+	std::vector<number> aNum;
+	aNum.push_back(2);
 	// boolean flag saying if everything was sent successfully, or there was a connection error
 	bool bSent = true;
 	if (aNum.empty())
@@ -35,11 +41,9 @@ void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int id
 		mutSocket->unlock();
 	}
 	if(!bSent)
-	{
-		std::ostringstream mes;
-		mes << "Unable to sent an answer to client " << idClient << " for request with id " << id << " due to network error";
-		log(mes.str());
-	}
+		log("Couldn't sent the answer", true);
+	else
+		log("Answer sent successfully, finishing the thread");
 }
 
 /// <summary>
@@ -64,17 +68,12 @@ public:
 			if (!recvAll(m_idSocket, &c, 1))
 			{
 				// log connection error and stop execution
-				std::ostringstream mes;
-				mes << "Session with client " << m_idClient << " is closed due to network error";
-				log(mes.str());
+				log("Session closed due to network error", true);
 				break;
 			}
 			if (MS::decodeType(c) != MS::ETypeMes::eReq)
 			{
-				// // log incorrect code and stop execution
-				std::ostringstream mes;
-				mes << "Client " << m_idClient << " sent a message with incorrect code";
-				log(mes.str());
+				log("Client sent a message with incorrect code", true);
 				break;
 			}
 			else
@@ -82,17 +81,14 @@ public:
 				std::array<char, 10> buf;
 				if(!recvAll(m_idSocket, buf.data(), 10))
 				{
-					// log connection error and stop execution
-					std::ostringstream mes;
-					mes << "Session with client " << m_idClient << " is closed due to network error";
-					log(mes.str());
+					log("Client sent a broken message", true);
 					break;
 				}
 
 				std::pair<short, number> req = MS::deserializeRequest(buf);
 				
 				std::ostringstream mes;
-				mes << "Client " << m_idClient << " sent a request with id " << req.first << " and number " << req.second;
+				mes << "Client sent a request with id " << req.first << " and number " << req.second;
 				log(mes.str());
 
 				// Each request is processed in a separate thread. This allows processing several requests from the same
@@ -120,14 +116,11 @@ private:
 
 void serveClient(int idSocket, int idClient)
 {
-	{
-		const std::thread::id idThread = std::this_thread::get_id();
-		std::ostringstream mes;
-		mes << "Thread with id " << idThread << " started serving a client " << idClient << " at socket " << idSocket;
-		log(mes.str());
-	}
+	setThreadName("Client thread");
+	log("Starting serving a client");
 
 	CThreadClient thr(idSocket, idClient);
 	thr.run();
+	log("Finished serving a client, closing socket");
 	close(idSocket);
 }
