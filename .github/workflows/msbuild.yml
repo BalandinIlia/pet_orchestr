@@ -22,18 +22,12 @@ jobs:
     - name: Build docker
       run: |
         cd docker
-        ls
         docker build -f network --platform linux/amd64 -t odin:dva .
-        ls
+        docker images
+        docker save -o odin_dva.zip odin:dva
 
     - name: Upload server application
       uses: actions/upload-artifact@v4
       with:
-        name: server
-        path: executables/server
-
-    - name: Upload client application
-      uses: actions/upload-artifact@v4
-      with:
-        name: client
-        path: executables/client
+        name: dock
+        path: docker/odin_dva.zip
