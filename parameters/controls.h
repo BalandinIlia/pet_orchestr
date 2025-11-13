@@ -12,6 +12,7 @@ typedef std::lock_guard<std::mutex> LG;
 // SOCKET type
 typedef int SOCKET;
 
+#ifndef IN_PARAM
 // server ip address
 extern const IPAddr addrIP;
 // server TCP port
@@ -20,3 +21,4 @@ extern const TCPPort port;
 // artificial mathematical core algorithm delay
 // This delay is necessary to simulate complex core algorithm
 extern const int delayAlgo;
+#endif
