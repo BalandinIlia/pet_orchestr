@@ -27,7 +27,6 @@ echo "Created libraries:"
 cd libraries
 ls
 cd ..
-mv server ../docker
 
 cd client
 chmod ++x build.sh
@@ -43,3 +42,4 @@ echo "Created Executables"
 cd executables
 ls
 cd ..
+mv /executables/server /docker
