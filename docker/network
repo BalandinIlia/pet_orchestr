@@ -4,10 +4,12 @@ WORKDIR /wd
 
 RUN apt update
 
-COPY server /app/exec 
+COPY network_exec /wd/network_exec 
 
-RUN chmod +x /app/exec
+RUN chmod +x /wd/network_exec
 
 EXPOSE 40000
+EXPOSE 40001
+EXPOSE 40002
 
-ENTRYPOINT ["/app/exec"]
+ENTRYPOINT ["/wd/network_exec"]
