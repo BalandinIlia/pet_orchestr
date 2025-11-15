@@ -20,8 +20,8 @@ void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int id
 	setThreadName("Case thread");
 	log("Starting solving a case for number", num);
 
-	const SOCKET id = connectToService();
-	log("Socket id", id);
+	const SOCKET idSocketService = connectToService();
+	log("Service socket id", idSocketService);
 }
 
 /// <summary>

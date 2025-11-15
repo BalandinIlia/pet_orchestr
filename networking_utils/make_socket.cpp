@@ -74,8 +74,8 @@ SOCKET connectToService()
 {
     log("connectToService function started");
     
-    const std::string addrDNS(std::getenv("SERVICE"));
-    log("DNS address", addrDNS);
+    const std::string nameDNS(std::getenv("SERVICE"));
+    log("DNS address", nameDNS);
     const std::string port(std::getenv("SERVICE_PORT"));
     log("Port", port);
  
@@ -83,7 +83,7 @@ SOCKET connectToService()
     constrain.ai_family = AF_INET;
     constrain.ai_socktype = SOCK_STREAM;
     addrinfo* pRes = nullptr;
-    const int resDNS = getaddrinfo(dnsName.c_str(), port.c_str(), &constrain, &pRes);
+    const int resDNS = getaddrinfo(nameDNS.c_str(), port.c_str(), &constrain, &pRes);
     if(resDNS != 0)
         log("getaddrinfo returned", resDNS, true);
     if(pRes == nullptr)
