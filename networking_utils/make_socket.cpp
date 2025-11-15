@@ -3,6 +3,7 @@
 #include "netinet/in.h"
 #include "arpa/inet.h"
 #include "unistd.h"
+#include "netdb.h"
 #include "cstring"
 #include "thread"
 #include "../logger/logger.h"
@@ -79,8 +80,8 @@ SOCKET connectToService()
     log("Port", port);
  
     addrinfo constrain{};
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
+    constrain.ai_family = AF_INET;
+    constrain.ai_socktype = SOCK_STREAM;
     addrinfo* pRes = nullptr;
     const int resDNS = getaddrinfo(dnsName.c_str(), port.c_str(), &constrain, &pRes);
     if(resDNS != 0)
