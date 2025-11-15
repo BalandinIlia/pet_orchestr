@@ -44,16 +44,19 @@ void CInteractKuberentes::terminateLive()
 
 void CInteractKuberentes::informLive()
 {
+    setThreadName("kubernetes liveliness");
     for(;;)
     {
         bool bCon = false;
         {
             LG lk(m_mutLive);
             bCon = m_live;
+            log("m_live flag read");
         }
         if(bCon)
         {
             const SOCKET id = listenPort(portLive);
+            log("starting listening to liveness port");
             accept(id, nullptr, nullptr);
             log("Liveliness confirmed to Kubernetes");
         }
