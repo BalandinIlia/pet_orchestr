@@ -8,9 +8,13 @@ SOCKET listenInfo();
 class CInteractKuberentes
 {
 public:
-    CInteractKuberentes();
-    void setReady(bool bReady);
+    static void start();
+    static void terminateLive();
 
 private:
-    bool m_ready;
+    static void informLive();
+
+private:
+    static bool m_live;
+    static std::mutex m_mutLive;
 };
