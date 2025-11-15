@@ -33,7 +33,7 @@ chmod ++x build.sh
 ./build.sh
 cd ..
 
-cd server
+cd network_exec
 chmod ++x build.sh
 ./build.sh
 cd ..
