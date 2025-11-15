@@ -5,6 +5,7 @@
 #include "clientInstance.h"
 #include "../networking_library/messages.h"
 #include "../networking_utils/send_receive.h"
+#include "../networking_utils/make_socket.h"
 #include "../math_core/host.h"
 
 /// <summary>
