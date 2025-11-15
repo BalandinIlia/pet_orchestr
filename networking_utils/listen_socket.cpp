@@ -4,6 +4,7 @@
 #include "arpa/inet.h"
 #include "unistd.h"
 #include "cstring"
+#include "thread"
 #include "../logger/logger.h"
 #include "listen_socket.h"
 
