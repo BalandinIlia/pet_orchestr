@@ -4,10 +4,11 @@
 #include "controls.h"
 
 static_assert(sizeof(IPAddr) == 4, "wrong type for IP address");
-const IPAddr addrIP = INADDR_ANY;
 
 static_assert(sizeof(TCPPort) == 2, "wrong type for TCP port");
-const TCPPort port = 40000;
+const TCPPort portInfo = 40000;
+const TCPPort portLive = 40001;
+const TCPPort portReady = 40002;
 
 static_assert(sizeof(number) == 8, "wrong type of number type");
 

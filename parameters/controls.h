@@ -12,10 +12,12 @@ typedef std::lock_guard<std::mutex> LG;
 // SOCKET type
 typedef int SOCKET;
 
-// server ip address
-extern const IPAddr addrIP;
-// server TCP port
-extern const TCPPort port;
+// working communication TCP port
+extern const TCPPort portInfo;
+// TCP port for signalling liveliness to kubernetes
+extern const TCPPort portLive;
+// TCP port for signalling readiness to kubernetes
+extern const TCPPort portReady;
 
 // artificial mathematical core algorithm delay
 // This delay is necessary to simulate complex core algorithm
