@@ -18,3 +18,5 @@ private:
     static bool m_live;
     static std::mutex m_mutLive;
 };
+
+SOCKET connectToService();

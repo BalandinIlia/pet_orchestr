@@ -18,32 +18,10 @@
 void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int idClient)
 {
 	setThreadName("Case thread");
-	std::ostringstream mes;
-	mes << "Starting solving a case for number" << num;
-	log(mes.str());
+	log("Starting solving a case for number", num);
 
-	std::vector<number> aNum;
-	aNum.push_back(2);
-	// boolean flag saying if everything was sent successfully, or there was a connection error
-	bool bSent = true;
-	if (aNum.empty())
-	{
-		std::array<char, 3> buf = MS::serializeAnsNo(id);
-		mutSocket->lock();
-		bSent = sendAll(idSocket, buf.data(), 3);
-		mutSocket->unlock();
-	}
-	else
-	{
-		std::vector<char> buf = MS::serializeAnsYes(aNum, id);
-		mutSocket->lock();
-		bSent = sendAll(idSocket, buf.data(), static_cast<int>(buf.size()));
-		mutSocket->unlock();
-	}
-	if(!bSent)
-		log("Couldn't sent the answer", true);
-	else
-		log("Answer sent successfully, finishing the thread");
+	const SOCKET id = connectToService();
+	log("Socket id", id);
 }
 
 /// <summary>

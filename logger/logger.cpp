@@ -61,8 +61,7 @@ std::shared_mutex CThreadInfo::m_mut;
 // Mutex protecting the console (logs are outputted to the console)
 static std::mutex mutCons;
 
-// log a message
-void log(const std::string& log, bool bError)
+static void logImpl(const std::string& log)
 {
     const std::pair<std::string, int> infoThr = CThreadInfo::threadInfo();
 
@@ -74,12 +73,58 @@ void log(const std::string& log, bool bError)
     mes << " ";
     mes << infoThr.second;
     mes << ": ";
+    mes << log;
+
+    std::string out = mes.str();
+    LG lk(mutCons);
+    std::cout << out << std::endl;
+}
+
+// log a message
+void log(const std::string& log, bool bError)
+{
+    // mes = "message"
+    std::ostringstream mes;
     if(bError)
         mes << "ERROR ";
     mes << log;
+    logImpl(mes.str());
+}
 
-    LG lk(mutCons);
-    std::cout << mes.str() << std::endl;
+void log(const std::string& s1, const std::string& s2, bool bError)
+{
+    // mes = "message"
+    std::ostringstream mes;
+    if(bError)
+        mes << "ERROR ";
+    mes << s1;
+    mes << " ";
+    mes << s2;
+    logImpl(mes.str());
+}
+
+void log(const std::string& s, int v, bool bError)
+{
+    // mes = "message"
+    std::ostringstream mes;
+    if(bError)
+        mes << "ERROR ";
+    mes << s;
+    mes << " ";
+    mes << v;
+    logImpl(mes.str());
+}
+
+void log(const std::string& s1, number n, bool bError)
+{
+    // mes = "message"
+    std::ostringstream mes;
+    if(bError)
+        mes << "ERROR ";
+    mes << s1;
+    mes << " ";
+    mes << n;
+    logImpl(mes.str());
 }
 
 void setThreadName(const std::string& name)
