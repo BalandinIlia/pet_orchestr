@@ -33,6 +33,11 @@ chmod ++x build.sh
 ./build.sh
 cd ..
 
+cd cache_exec
+chmod ++x build.sh
+./build.sh
+cd ..
+
 echo "Created Executables"
 cd executables
 ls
