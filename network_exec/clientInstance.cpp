@@ -23,6 +23,30 @@ void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int id
 
 	const SOCKET idSocketService = connectToService();
 	log("Service socket id", idSocketService);
+
+	std::vector<number> aNum = askInner(idSocketService, num);
+
+	// boolean flag saying if everything was sent successfully, or there was a connection error
+	bool bSent = true;
+	if (aNum.empty())
+	{
+		std::array<char, 3> buf = MS::serializeAnsNo(id);
+		LG lk(mutSocket);
+		bSent = sendAll(idSocket, buf.data(), 3);
+	}
+	else
+	{
+		std::vector<char> buf = MS::serializeAnsYes(aNum, id);
+		LG lk(mutSocket);
+		bSent = sendAll(idSocket, buf.data(), static_cast<int>(buf.size()));
+	}
+
+	if(!bSent)
+	{
+		std::ostringstream mes;
+		mes << "Unable to sent an answer to client " << idClient << " for request with id " << id << " due to network error";
+		log(mes.str(), true);
+	}
 }
 
 /// <summary>

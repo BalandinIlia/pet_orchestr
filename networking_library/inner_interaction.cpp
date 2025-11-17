@@ -8,44 +8,33 @@
 #include "../networking_utils/send_receive.h"
 #include "../logger/logger.h"
 
-std::vector<number> askInner(const std::string& dnsName, number num)
+std::vector<number> askInner(SOCKET id, number num)
 {
     log("Starting function askInner");
-    log("Start resolving DNS name" + dnsName);
-    
-    addrinfo* pSysAddr;
-    const int resDNS = getaddrinfo(dnsName.c_str(), nullptr, nullptr, &pSysAddr);
-    if(resDNS != 0)
-        log("getaddrinfo returned " + resDNS, true);
-    if(pSysAddr == nullptr)
-        log("Failed to resolve DNS", true);
-
-    addrinfo& sys = *pSysAddr;
-    if(sys.ai_next != nullptr)
-        log("More than 1 resolution", true);
-
-    const SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
-    int resCon = connect(idSocket, sys.ai_addr, sizeof(sys.ai_addr));
-    if(resCon != 0)
-        log("connect returned " + resCon, true);
-
-    log("Sending data");
-    sendAll(idSocket, reinterpret_cast<char*>(num), 8);
-    log("Data sent");
-
-    log("Receiving data");
+    sendNum(id, num);
+    number cur = 0;
     std::vector<number> ans;
     for(;;)
     {
-        number cur = 0;
-        recvAll(idSocket, reinterpret_cast<char*>(cur), 8);
+        receiveNum(id, cur);
         if(cur == 0)
             break;
         else
             ans.push_back(cur);
     }
-    log("Data received");
+    return ans;
+}
 
-    log("Finishing function askInner");
+void answerInner(SOCKET id, std::vector<number> ans)
+{
+    for(const number& n: ans)
+        sendNum(id, n);
+    sendNum(id, 0);
+}
+
+number getReqInner(SOCKET id)
+{
+    number ans = 0;
+    receiveNum(id, ans);
     return ans;
 }

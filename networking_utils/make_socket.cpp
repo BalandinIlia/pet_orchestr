@@ -94,7 +94,7 @@ SOCKET connectToService()
         log("More than 1 resolution", true);
 
     const SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
-    const int resCon = connect(idSocket, res.ai_addr, sizeof(res.ai_addr));
+    const int resCon = connect(idSocket, res.ai_addr, res.ai_addrlen);
     if(resCon != 0)
         log("connect returned ", resCon, true);
 

@@ -3,11 +3,6 @@ chmod ++x build.sh
 ./build.sh
 cd ..
 
-cd math_core
-chmod ++x build.sh
-./build.sh
-cd ..
-
 cd networking_utils
 chmod ++x build.sh
 ./build.sh

@@ -2,9 +2,10 @@
 #include "vector"
 #include "map"
 #include "mutex"
+#include "../logger/logger.h"
 #include "send_receive.h"
 
-bool recvAll(int id, char* buf, int len)
+bool recvAll(SOCKET id, char* buf, int len)
 {
     int bytes = 0;
     while (len != 0)
@@ -19,7 +20,7 @@ bool recvAll(int id, char* buf, int len)
     return true;
 }
 
-bool sendAll(int id, char* buf, int len)
+bool sendAll(SOCKET id, char* buf, int len)
 {
     int bytes = 0;
     while (len != 0)
@@ -32,4 +33,22 @@ bool sendAll(int id, char* buf, int len)
         bytes = 0;
     }
     return true;
+}
+
+bool sendNum(SOCKET id, number num)
+{
+    log("Sending number", num);
+    char* p = reinterpret_cast<char*>(&num);
+    return sendAll(id, p, 8);
+}
+
+bool recvNumber(SOCKET id, number& num)
+{
+    char* p = reinterpret_cast<char*>(&num);
+    const bool bSuc = sendAll(id, p, 8);
+    if(bSuc)
+        log("Received number", num);
+    else
+        log("Failed to receive a number", true);
+    return bSuc;
 }
