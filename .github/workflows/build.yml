@@ -20,6 +20,12 @@ jobs:
         chmod +x build.sh
         ./build.sh
 
+    - name: Upload client application
+      uses: actions/upload-artifact@v4
+      with:
+        name: client
+        path: executables/client
+
     - name: Build docker
       run: |
         cd docker
