@@ -45,7 +45,7 @@ bool sendNum(SOCKET id, number num)
 bool recvNum(SOCKET id, number& num)
 {
     char* p = reinterpret_cast<char*>(&num);
-    const bool bSuc = sendAll(id, p, 8);
+    const bool bSuc = recvAll(id, p, 8);
     if(bSuc)
         log("Received number", num);
     else
