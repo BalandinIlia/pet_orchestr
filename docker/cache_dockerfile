@@ -1,0 +1,14 @@
+FROM debian:stable
+
+WORKDIR /wd
+
+RUN apt update
+
+COPY cache_exec /wd/cache_exec 
+
+RUN chmod +x /wd/cache_exec
+
+EXPOSE 40000
+EXPOSE 40001
+
+ENTRYPOINT ["/wd/cache_exec"]

@@ -23,7 +23,8 @@ jobs:
     - name: Build docker
       run: |
         cd docker
-        docker build -f network --platform linux/amd64 -t image:current .
+        docker build -f network_dockerfile --platform linux/amd64 -t network:image .
+        docker build -f cache_dockerfile --platform linux/amd64 -t cache:image .
         docker images
 
     - name: Login to Container Registry
@@ -32,10 +33,12 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-    - name: Tag image
+    - name: Tag images
       run: | 
-          docker tag image:current ilia56/network_image:latest
+          docker tag network:image ilia56/network_image:latest
+          docker tag cache:image ilia56/cache_image:latest
   
-    - name: Push image to docker hub Container Registry
+    - name: Push images to docker hub Container Registry
       run: | 
           docker push ilia56/network_image:latest
+          docker push ilia56/cache_image:latest
