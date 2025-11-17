@@ -13,7 +13,7 @@ int main()
     sockaddr_in serverAddr{};
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-    serverAddr.sin_port = htons(portInfo);
+    serverAddr.sin_port = htons(31000);
     connect(idSocket, reinterpret_cast<sockaddr*>(&serverAddr), sizeof(serverAddr));
 
     CRunner r(idSocket);
