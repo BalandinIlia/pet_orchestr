@@ -16,10 +16,10 @@ static std::shared_mutex mutCache;
 static std::vector<number> askCalc(number num)
 {
 	const SOCKET idSocketService = connectToService();
-	LOG("Service socket id", idSocketService);
+	LOG2("Service socket id", idSocketService)
 
 	std::vector<number> aNum = askInner(idSocketService, num);
-    LOG("Received an answer from calc service. First number is ", aNum[0]);
+    LOG2("Received an answer from calc service. First number is ", aNum[0])
 
     return aNum;
 }
@@ -29,7 +29,7 @@ static void solveReq(SOCKET id)
     setThreadName("Solve request thread");
 
     const number reqNum = getReqInner(id);
-    LOG("Request ", reqNum);
+    LOG2("Request ", reqNum)
     
     std::vector<number> ans;
 
@@ -45,14 +45,14 @@ static void solveReq(SOCKET id)
     
     if(bFound)
     {
-        LOG("Answer found in cache:", ans);
+        LOG2("Answer found in cache:", ans)
         answerInner(id, ans);
     }
     else
     {
-        LOG("Answer not found in cache, adressing calc service");
+        LOG1("Answer not found in cache; adressing calc service")
         ans = askCalc(reqNum);
-        LOG("Answer received:", ans);
+        LOG2("Answer received:", ans)
         {
             std::unique_lock lk(mutCache);
             cache[reqNum] = ans;
@@ -64,17 +64,17 @@ static void solveReq(SOCKET id)
 int main()
 {
     setThreadName("Main thread");
-    LOG(std::string("Starting cache container"));
+    LOG1(std::string("Starting cache container"));
 
     CInteractKuberentes::start();
 
     const SOCKET idSocket = listenInfo();
-    LOG(std::string("Main socket created"));
+    LOG1(std::string("Main socket created"));
 
     for (;;)
     {
         SOCKET conn = accept(idSocket, nullptr, nullptr);
-        LOG(std::string("New request received"));
+        LOG1(std::string("New request received"));
         std::thread t(solveReq, conn);
         t.detach();
     }
