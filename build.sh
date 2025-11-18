@@ -38,9 +38,15 @@ chmod ++x build.sh
 ./build.sh
 cd ..
 
+cd calc_exec
+chmod ++x build.sh
+./build.sh
+cd ..
+
 echo "Created Executables"
 cd executables
 ls
 mv network_exec ../docker
 mv cache_exec ../docker
+mv calc_exec ../docker
 cd ..

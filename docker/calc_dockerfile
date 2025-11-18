@@ -1,0 +1,14 @@
+FROM debian:stable
+
+WORKDIR /wd
+
+RUN apt update
+
+COPY calc_exec /wd/calc_exec 
+
+RUN chmod +x /wd/calc_exec
+
+EXPOSE 31000
+EXPOSE 31001
+
+ENTRYPOINT ["/wd/calc_exec"]
