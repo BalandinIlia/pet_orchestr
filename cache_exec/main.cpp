@@ -15,12 +15,21 @@ static std::shared_mutex mutCache;
 
 static std::vector<number> askCalc(number num)
 {
-    std::vector<number> ans;
-    return ans;
+	log("Sending to calc service number ", num);
+
+	const SOCKET idSocketService = connectToService();
+	log("Service socket id", idSocketService);
+
+	std::vector<number> aNum = askInner(idSocketService, num);
+    log("Received an answer from calc service. First number is ", aNum[0]);
+
+    return aNum;
 }
 
 static void solveReq(SOCKET id)
 {
+    setThreadName("Solve request thread");
+
     const number reqNum = getReqInner(id);
     
     std::vector<number> ans;
