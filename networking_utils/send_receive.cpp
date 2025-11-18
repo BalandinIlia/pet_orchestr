@@ -37,7 +37,7 @@ bool sendAll(SOCKET id, char* buf, int len)
 
 bool sendNum(SOCKET id, number num)
 {
-    LOG("Sending number", num);
+    LOG2("Sending number", num);
     char* p = reinterpret_cast<char*>(&num);
     return sendAll(id, p, 8);
 }
@@ -47,8 +47,8 @@ bool recvNum(SOCKET id, number& num)
     char* p = reinterpret_cast<char*>(&num);
     const bool bSuc = recvAll(id, p, 8);
     if(bSuc)
-        LOG("Received number", num);
+        LOG2("Received number", num);
     else
-        LOG("Failed to receive a number", true);
+        LOG2("Failed to receive a number", true);
     return bSuc;
 }
