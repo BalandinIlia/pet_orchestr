@@ -20,7 +20,7 @@ static std::vector<number> doCalc(number num)
             ans.push_back(num/d);
         }
     }
-    log("Quantity of found divisors ", ans.size());
+    log("Quantity of found divisors ", static_cast<number>(ans.size()));
     return ans;
 }
 
