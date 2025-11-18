@@ -10,12 +10,12 @@
 int main()
 {
     setThreadName("Main thread");
-    LOG(std::string("Starting networking container"));
+    LOG1(std::string("Starting networking container"))
 
     CInteractKuberentes::start();
 
     const SOCKET idSocket = listenInfo();
-    LOG(std::string("Main socket created"));
+    LOG1(std::string("Main socket created"));
 
     // client identificator
     // Receive a connection from a client and serve the client in a separate thread. 
@@ -25,7 +25,7 @@ int main()
     for (;;)
     {
         int conn = accept(idSocket, nullptr, nullptr);
-        LOG(std::string("New client accepted"));
+        LOG1(std::string("New client accepted"));
         std::thread t(serveClient, conn, idClient);
         idClient++;
         t.detach();
