@@ -34,7 +34,7 @@ int main()
     int idClient = 1;
     for (;;)
     {
-        int conn = accept(idSocket, nullptr, nullptr);
+        int conn = accept(idSocket.value(), nullptr, nullptr);
         LOG1(std::string("New client accepted"));
         std::thread t(serveClient, conn, idClient);
         idClient++;

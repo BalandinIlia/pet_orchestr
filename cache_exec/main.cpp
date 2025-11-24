@@ -82,7 +82,7 @@ int main()
 
     for (;;)
     {
-        SOCKET conn = accept(idSocket, nullptr, nullptr);
+        SOCKET conn = accept(idSocket.value(), nullptr, nullptr);
         LOG1(std::string("New request received"));
         std::thread t(solveReq, conn);
         t.detach();
