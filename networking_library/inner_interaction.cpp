@@ -8,33 +8,43 @@
 #include "../networking_utils/send_receive.h"
 #include "../logger/logger.h"
 
-std::vector<number> askInner(SOCKET id, number num)
+std::optional<std::vector<number>> askInner(SOCKET id, number num)
 {
-    LOG1("Starting function askInner");
-    sendNum(id, num);
-    number cur = 0;
+    LOG2("Performing ask inner for number", num)
+    
+    if(!sendNum(id, num))
+    {
+        LOG2("Failed to send a number", true)
+        return std::nullopt;
+    }
+    
     std::vector<number> ans;
     for(;;)
     {
-        recvNum(id, cur);
-        if(cur == 0)
+        const std::optional<number> num = recvNum(id, cur);
+        if(num == std::nullopt)
+        {
+            LOG2("Failed to receive a number", true)
+            return std::nullopt;
+        }
+        else if(num.value() == 0)
             break;
         else
-            ans.push_back(cur);
+            ans.push_back(num.value());
     }
     return ans;
 }
 
-void answerInner(SOCKET id, std::vector<number> ans)
+bool answerInner(SOCKET id, const std::vector<number>& ans)
 {
+    bool bOk = true;
     for(const number& n: ans)
-        sendNum(id, n);
-    sendNum(id, 0);
+        bOk &= sendNum(id, n);
+    bOk &= sendNum(id, 0);
+    return bOk;
 }
 
-number getReqInner(SOCKET id)
+std::optional<number> getReqInner(SOCKET id)
 {
-    number ans = 0;
-    recvNum(id, ans);
-    return ans;
+    return recvNum(id);
 }

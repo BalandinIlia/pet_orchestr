@@ -6,6 +6,7 @@
 #include "unistd.h"
 #include "cstring"
 #include "iostream"
+#include "optional"
 #include "../parameters/controls.h"
 
 // This is an utility function for receiving bytes from socket. Unlike system recv, it grants that all len
@@ -19,4 +20,4 @@ bool recvAll(SOCKET id, char* buf, int len);
 bool sendAll(SOCKET id, char* buf, int len);
 
 bool sendNum(SOCKET id, number num);
-bool recvNum(SOCKET id, number& num);
+std::optional<number> recvNum(SOCKET id);

@@ -37,18 +37,16 @@ bool sendAll(SOCKET id, char* buf, int len)
 
 bool sendNum(SOCKET id, number num)
 {
-    LOG2("Sending number", num)
     char* p = reinterpret_cast<char*>(&num);
     return sendAll(id, p, 8);
 }
 
-bool recvNum(SOCKET id, number& num)
+std::optional<number> recvNum(SOCKET id)
 {
+    number num = 0;
     char* p = reinterpret_cast<char*>(&num);
     const bool bSuc = recvAll(id, p, 8);
-    if(bSuc)
-        LOG2("Received number", num)
-    else
+    if(!bSuc)
         LOG2("Failed to receive a number", true)
-    return bSuc;
+    return bSuc ? num : std::nullopt;
 }

@@ -13,13 +13,17 @@
 static std::map<number, std::vector<number>> cache;
 static std::shared_mutex mutCache;
 
-static std::vector<number> askCalc(number num)
+static std::optional<std::vector<number>> askCalc(number num)
 {
 	const SOCKET idSocketService = connectToService();
 	LOG2("Service socket id", idSocketService)
 
-	std::vector<number> aNum = askInner(idSocketService, num);
-    LOG2("Received an answer from calc service. First number is ", aNum[0])
+	const std::optional<std::vector<number>> aNum = askInner(idSocketService, num);
+    
+    if(aNum != nullopt)
+        LOG2("Received an answer from calc service. First number is ", aNum.value()[0])
+    else
+        LOG2("Failed to get an answer from calc service", true)
 
     return aNum;
 }
@@ -44,21 +48,25 @@ static void solveReq(SOCKET id)
     }
     
     if(bFound)
-    {
         LOG2("Answer found in cache:", ans)
-        answerInner(id, ans);
-    }
     else
     {
         LOG1("Answer not found in cache; adressing calc service")
-        ans = askCalc(reqNum);
-        LOG2("Answer received:", ans)
+        std::optional<std::vector<number>> res = askCalc(reqNum);
+        if(res == std::nullopt)
+            LOG2("Failed to receive an answer from calc service", true)
+        else
         {
+            ans = res.value();
+            LOG2("Answer received:", ans)
             std::unique_lock lk(mutCache);
             cache[reqNum] = ans;
         }
-        answerInner(id, ans);
     }
+    if(!answerInner(id, ans))
+        LOG2("Failed to send the answer", true)
+
+    closesocket(id);
 }
 
 int main()

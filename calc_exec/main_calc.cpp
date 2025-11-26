@@ -9,6 +9,9 @@ static std::vector<number> doCalc(number num)
 {
     LOG2("Calcing for ", num);
 
+    if(num == 42)
+        throw std::exception();
+
     std::vector<number> ans;
     for(number d = 2; d < num; d++)
     {

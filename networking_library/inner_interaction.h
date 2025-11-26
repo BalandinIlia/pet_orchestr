@@ -2,6 +2,6 @@
 #include "vector"
 #include "../parameters/controls.h"
 
-std::vector<number> askInner(SOCKET id, number num);
-void answerInner(SOCKET id, std::vector<number> ans);
-number getReqInner(SOCKET id);
+std::optional<std::vector<number>> askInner(SOCKET id, number num);
+bool answerInner(SOCKET id, const std::vector<number>& ans);
+std::optional<number> getReqInner(SOCKET id);
