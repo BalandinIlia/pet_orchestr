@@ -21,7 +21,7 @@ std::optional<std::vector<number>> askInner(SOCKET id, number num)
     std::vector<number> ans;
     for(;;)
     {
-        const std::optional<number> num = recvNum(id, cur);
+        const std::optional<number> num = recvNum(id);
         if(num == std::nullopt)
         {
             LOG2("Failed to receive a number", true)

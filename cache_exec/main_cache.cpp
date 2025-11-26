@@ -20,7 +20,7 @@ static std::optional<std::vector<number>> askCalc(number num)
 
 	const std::optional<std::vector<number>> aNum = askInner(idSocketService, num);
     
-    if(aNum != nullopt)
+    if(aNum != std::nullopt)
         LOG2("Received an answer from calc service. First number is ", aNum.value()[0])
     else
         LOG2("Failed to get an answer from calc service", true)

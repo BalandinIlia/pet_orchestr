@@ -33,7 +33,7 @@ void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int id
 
 	// boolean flag saying if everything was sent successfully, or there was a connection error
 	bool bSent = true;
-	if (aNum.empty())
+	if (aNum.value().empty())
 	{
 		std::array<char, 3> buf = MS::serializeAnsNo(id);
 		LG lk(*mutSocket);
@@ -41,7 +41,7 @@ void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int id
 	}
 	else
 	{
-		std::vector<char> buf = MS::serializeAnsYes(aNum, id);
+		std::vector<char> buf = MS::serializeAnsYes(aNum.value(), id);
 		LG lk(*mutSocket);
 		bSent = sendAll(idSocket, buf.data(), static_cast<int>(buf.size()));
 	}
