@@ -5,7 +5,7 @@
 #include "../logger/logger.h"
 #include "send_receive.h"
 
-bool recvAll(SOCK id, char* buf, int len)
+bool recvAll(const SOCK& id, char* buf, int len)
 {
     int bytes = 0;
     while (len != 0)
@@ -20,7 +20,7 @@ bool recvAll(SOCK id, char* buf, int len)
     return true;
 }
 
-bool sendAll(SOCK id, char* buf, int len)
+bool sendAll(const SOCK& id, char* buf, int len)
 {
     int bytes = 0;
     while (len != 0)
@@ -35,13 +35,13 @@ bool sendAll(SOCK id, char* buf, int len)
     return true;
 }
 
-bool sendNum(SOCK id, number num)
+bool sendNum(const SOCK& id, number num)
 {
     char* p = reinterpret_cast<char*>(&num);
     return sendAll(id, p, 8);
 }
 
-std::optional<number> recvNum(SOCK id)
+std::optional<number> recvNum(const SOCK& id)
 {
     number num = 0;
     char* p = reinterpret_cast<char*>(&num);

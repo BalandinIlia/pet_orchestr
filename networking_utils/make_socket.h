@@ -12,8 +12,8 @@ private:
     SOCK();
 
 public:
-    SOCK(const SOCK& inst) = delete
-    SOCK& operator=(const SOCK& inst) = delete
+    SOCK(const SOCK& inst) = delete;
+    SOCK& operator=(const SOCK& inst) = delete;
 
     SOCK(SOCK&& inst);
     SOCK& operator=(SOCK&& inst);
