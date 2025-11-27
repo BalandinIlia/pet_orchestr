@@ -9,7 +9,46 @@
 #include "../logger/logger.h"
 #include "make_socket.h"
 
-static std::optional<SOCKET> listenPort(TCPPort port)
+class CSOCKFactory
+{
+public:
+    static SOCK make(SOCKET id)
+    {
+        SOCK ans;
+        and.m_id = id;
+        return std::move(ans);
+    }
+}
+
+SOCK::SOCK(){}
+
+SOCK::SOCK(SOCK&& inst)
+{
+    m_id = inst.m_id;
+    inst.m_id = -1;
+}
+
+SOCK::SOCK& operator=(SOCK&& inst)
+{
+    m_id = inst.m_id;
+    inst.m_id = -1;
+}
+
+SOCK accept(const SOCK& s) const
+{
+    SOCKET acc = accept(s, nullptr, nullptr);
+    SOCK ans;
+    ans.m_id = acc;
+    return std::move(ans);
+}
+
+SOCK::~SOCK()
+{
+    if(m_id >= 0)
+        close(m_id);
+}
+
+static std::optional<SOCK> listenPort(TCPPort port)
 {
     const SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (idSocket <= 0)
@@ -34,10 +73,10 @@ static std::optional<SOCKET> listenPort(TCPPort port)
         return std::nullopt;
     }
 
-    return idSocket;
+    return CSOCKFactory::make(idSocket);
 }
 
-std::optional<SOCKET> listenInfo()
+std::optional<SOCK> listenInfo()
 {
     return listenPort(portInfo);
 }
@@ -60,7 +99,7 @@ void CInteractKuberentes::informLive()
 {
     setThreadName("kubernetes liveliness");
     
-    const std::optional<SOCKET> id = listenPort(portLive);
+    const std::optional<SOCK> id = listenPort(portLive);
     if(id.has_value())
         LOG1("listening socket created")
     else
@@ -72,11 +111,9 @@ void CInteractKuberentes::informLive()
         {
             LG lk(m_mutLive);
             bCon = m_live;
-            LOG1("m_live flag read")
         }
         if(bCon)
         {
-            LOG1("waiting for incoming connection")
             accept(id.value(), nullptr, nullptr);
             LOG1("received incoming connection")
         }
@@ -117,5 +154,5 @@ SOCKET connectToService()
         LOG3("connect returned ", resCon, true)
 
     LOG1("connectToService function finished")
-    return idSocket;
+    return CSOCKFactory::make(idSocket);
 }

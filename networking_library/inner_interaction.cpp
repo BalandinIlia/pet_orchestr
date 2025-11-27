@@ -8,7 +8,7 @@
 #include "../networking_utils/send_receive.h"
 #include "../logger/logger.h"
 
-std::optional<std::vector<number>> askInner(SOCKET id, number num)
+std::optional<std::vector<number>> askInner(const SOCK& id, number num)
 {
     LOG2("Performing ask inner for number", num)
     
@@ -35,7 +35,7 @@ std::optional<std::vector<number>> askInner(SOCKET id, number num)
     return ans;
 }
 
-bool answerInner(SOCKET id, const std::vector<number>& ans)
+bool answerInner(const SOCK& id, const std::vector<number>& ans)
 {
     bool bOk = true;
     for(const number& n: ans)
@@ -44,7 +44,7 @@ bool answerInner(SOCKET id, const std::vector<number>& ans)
     return bOk;
 }
 
-std::optional<number> getReqInner(SOCKET id)
+std::optional<number> getReqInner(const SOCK& id)
 {
     return recvNum(id);
 }

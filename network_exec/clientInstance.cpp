@@ -16,12 +16,12 @@
 /// <param name="idSocket"> in. Socket id </param>
 /// <param name="mutSocket"> in. Socket mutex: the mutex which need to be locked before sending data through socket </param>
 /// <param name="idClient"> in. Client id (for logging) </param>
-void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int idClient)
+void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket, int idClient)
 {
 	setThreadName("Case thread");
 	LOG2("Starting solving a case for number", num)
 
-	const SOCKET idSocketService = connectToService();
+	SOCK idSocketService = connectToService();
 	LOG2("Service socket id", idSocketService)
 
 	std::optional<std::vector<number>> aNum = askInner(idSocketService, num);
@@ -60,8 +60,8 @@ void solveCase(short id, number num, int idSocket, std::mutex* mutSocket, int id
 class CThreadClient
 {
 public:
-	CThreadClient(int idSocket, int idClient) : 
-		m_idSocket(idSocket),
+	CThreadClient(SOCK&& idSocket, int idClient) : 
+		m_idSocket(std::forward(idSocket)),
 		m_idClient(idClient)
 	{}
 
@@ -112,7 +112,7 @@ public:
 	}
 
 private:
-	int m_idSocket;
+	SOCK m_idSocket;
 
 	int m_idClient;
 
@@ -122,13 +122,12 @@ private:
 	std::mutex m_mutSend;
 };
 
-void serveClient(int idSocket, int idClient)
+void serveClient(SOCK idSocket, int idClient)
 {
 	setThreadName("Client thread");
 	LOG1("Starting serving a client")
 
-	CThreadClient thr(idSocket, idClient);
+	CThreadClient thr(std::move(idSocket), idClient);
 	thr.run();
-	LOG1("Finished serving a client; closing socket")
-	close(idSocket);
+	LOG1("Finished serving a client")
 }

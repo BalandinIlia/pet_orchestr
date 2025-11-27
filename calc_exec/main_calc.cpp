@@ -22,7 +22,7 @@ static std::vector<number> doCalc(number num)
     return ans;
 }
 
-static void solveReq(SOCKET id)
+static void solveReq(SOCK&& id)
 {
     setThreadName("Solve request thread");
     const std::optional<number> reqNum = getReqInner(id);
@@ -58,9 +58,9 @@ int main()
 
     for (;;)
     {
-        SOCKET conn = accept(idSocket.value(), nullptr, nullptr);
+        SOCK conn = accept(idSocket.value(), nullptr, nullptr);
         LOG1(std::string("New request received"))
-        std::thread t(solveReq, conn);
+        std::thread t(solveReq, std::move(conn));
         t.detach();
     }
 

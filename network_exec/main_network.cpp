@@ -15,7 +15,7 @@ int main()
 
     CInteractKuberentes::start();
 
-    const std::optional<SOCKET> idSocket = listenInfo();
+    const std::optional<SOCK> idSocket = listenInfo();
     if(idSocket.has_value())
         LOG1("Main socket created")
     else
@@ -34,7 +34,7 @@ int main()
     int idClient = 1;
     for (;;)
     {
-        int conn = accept(idSocket.value(), nullptr, nullptr);
+        SOCK conn = idSocket.accept();
         LOG1(std::string("New client accepted"));
         std::thread t(serveClient, conn, idClient);
         idClient++;

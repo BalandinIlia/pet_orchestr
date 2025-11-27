@@ -2,8 +2,36 @@
 #include "optional"
 #include "../parameters/controls.h"
 
+class CSOCKFactory;
+
+// This class owns a TCP socket.
+// The class make sure that the socket is closed after it is now used anymore.
+class SOCK
+{
+private:
+    SOCK();
+
+public:
+    SOCK(const SOCK& inst) = delete
+    SOCK& operator=(const SOCK& inst) = delete
+
+    SOCK(SOCK&& inst);
+    SOCK& operator=(SOCK&& inst);
+
+    SOCK accept(const SOCK& s) const;
+
+    SOCKET() const { return m_id; }
+
+    ~SOCK();
+
+private:
+    SOCKET m_id;
+
+friend class CSOCKFactory
+};
+
 // returns socket listening to incoming work connections
-std::optional<SOCKET> listenInfo();
+std::optional<SOCK> listenInfo();
 
 // class managing Kubernetes interaction: readiness, liveliness, startup
 class CInteractKuberentes
@@ -20,4 +48,4 @@ private:
     static std::mutex m_mutLive;
 };
 
-SOCKET connectToService();
+SOCK connectToService();

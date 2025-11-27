@@ -8,4 +8,4 @@
 #include "iostream"
 
 // This fucntion serves a client with given id connected to given socket
-void serveClient(int id, int idClient);
+void serveClient(SOCK id, int idClient);
