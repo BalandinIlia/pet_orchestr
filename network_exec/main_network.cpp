@@ -1,6 +1,7 @@
 #include "thread"
 #include "string"
 #include "sstream"
+#include "functional"
 #include "../networking_library/messages.h"
 #include "../networking_utils/send_receive.h"
 #include "../networking_utils/make_socket.h"
@@ -33,7 +34,7 @@ int main()
     {
         SOCK conn = idSocket.value().acceptS();
         LOG1(std::string("New client accepted"));
-        std::thread t(serveClient, &conn, idClient);
+        std::thread t(serveClient, conn.mv(), idClient);
         idClient++;
         t.detach();
     }
