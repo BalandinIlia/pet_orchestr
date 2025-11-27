@@ -88,10 +88,7 @@ int main()
     else
     {
         LOG2("Failed to create main socket", true)
-        // sleep for an hour to keep the pos alive; This enables the operator to see the error:
-        // logs are removed when the pod crashes
-        sleep(3600);
-        throw std::exception();
+        CInteractKuberentes::terminateLive();
     }
 
     for (;;)
