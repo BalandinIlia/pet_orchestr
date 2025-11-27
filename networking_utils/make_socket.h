@@ -18,7 +18,7 @@ public:
     SOCK(SOCK&& inst);
     SOCK& operator=(SOCK&& inst);
 
-    SOCK accept(const SOCK& s) const;
+    SOCK acceptS(const SOCK& s) const;
 
     operator SOCKET() const { return m_id; }
 

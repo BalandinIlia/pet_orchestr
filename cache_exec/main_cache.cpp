@@ -15,10 +15,10 @@ static std::shared_mutex mutCache;
 
 static std::optional<std::vector<number>> askCalc(number num)
 {
-	const SOCKET idSocketService = connectToService();
-	LOG2("Service socket id", idSocketService)
+	const SOCK sockServ = connectToService();
+	LOG2("Service socket id", sockServ)
 
-	const std::optional<std::vector<number>> aNum = askInner(idSocketService, num);
+	const std::optional<std::vector<number>> aNum = askInner(sockServ, num);
     
     if(aNum != std::nullopt)
         LOG2("Received an answer from calc service. First number is ", aNum.value()[0])
@@ -28,7 +28,7 @@ static std::optional<std::vector<number>> askCalc(number num)
     return aNum;
 }
 
-static void solveReq(SOCKET id)
+static void solveReq(SOCK&& sockReq)
 {
     setThreadName("Solve request thread");
 
@@ -36,10 +36,8 @@ static void solveReq(SOCKET id)
     if(reqNum == std::nullopt)
     {
         LOG2("Failed to receive request value", true)
-        close(id);
         return;
     }
-
     LOG2("Request ", reqNum.value())
     
     std::vector<number> ans;
@@ -63,7 +61,6 @@ static void solveReq(SOCKET id)
         if(res == std::nullopt)
         {
             LOG2("Failed to receive an answer from calc service", true)
-            close(id);
             return;
         }
         else
@@ -76,8 +73,6 @@ static void solveReq(SOCKET id)
     }
     if(!answerInner(id, ans))
         LOG2("Failed to send the answer", true)
-
-    close(id);
 }
 
 int main()
@@ -87,8 +82,8 @@ int main()
 
     CInteractKuberentes::start();
 
-    const std::optional<SOCKET> idSocket = listenInfo();
-    if(idSocket.has_value())
+    const std::optional<SOCK> sockMain = listenInfo();
+    if(sockMain.has_value())
         LOG1("Main socket created")
     else
     {
@@ -101,9 +96,9 @@ int main()
 
     for (;;)
     {
-        SOCKET conn = accept(idSocket.value(), nullptr, nullptr);
+        SOCK sockReq = sockMain.acceptS();
         LOG1(std::string("New request received"));
-        std::thread t(solveReq, conn);
+        std::thread t(solveReq, std::move(sockReq));
         t.detach();
     }
 

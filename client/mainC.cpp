@@ -9,7 +9,7 @@ int main()
     std::cout << "Client" << std::endl;
 
     SOCK s = sockClient()
-    CRunner r(s);
+    CRunner r(std::move(s));
     r.run();
 
     return 0;

@@ -35,7 +35,7 @@ SOCK& SOCK::operator=(SOCK&& inst)
     return *this;
 }
 
-SOCK SOCK::accept(const SOCK& s) const
+SOCK SOCK::acceptS(const SOCK& s) const
 {
     SOCKET t = s;
     SOCKET acc = accept(t, nullptr, nullptr);

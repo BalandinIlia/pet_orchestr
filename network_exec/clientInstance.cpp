@@ -60,8 +60,8 @@ void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket
 class CThreadClient
 {
 public:
-	CThreadClient(SOCK&& idSocket, int idClient) : 
-		m_idSocket(std::forward(idSocket)),
+	CThreadClient(SOCK&& sock, int idClient) : 
+		m_idSocket(std::move(sock)),
 		m_idClient(idClient)
 	{}
 
@@ -101,7 +101,7 @@ public:
 
 				// Each request is processed in a separate thread. This allows processing several requests from the same
 				// client simultaneously.
-				std::thread t(solveCase, req.first, req.second, m_idSocket, &m_mutSend, m_idClient);
+				std::thread t(solveCase, req.first, req.second, m_sock, &m_mutSend, m_idClient);
 				aThrChild.push_back(std::move(t));
 			}
 		}
@@ -112,7 +112,7 @@ public:
 	}
 
 private:
-	SOCK m_idSocket;
+	SOCK m_sock;
 
 	int m_idClient;
 
