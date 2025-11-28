@@ -29,7 +29,7 @@ static std::optional<std::vector<number>> askCalc(number num)
 	const std::optional<std::vector<number>> aNum = askInner(sockServ.value(), num);
     
     if(aNum != std::nullopt)
-        LOG2("Received an answer from calc service. First number is ", aNum.value()[0])
+        LOG2("Received an answer from calc service:", aNum.value())
     else
         LOG2("Failed to get an answer from calc service", true)
 

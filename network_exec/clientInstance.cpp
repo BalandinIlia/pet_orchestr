@@ -39,6 +39,8 @@ void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket
 		LOG2("Failed to get an answer from cache service", true)
 		return;
 	}
+	else
+		LOG2("Received an answer from cache service:", aNum.value())
 
 	// boolean flag saying if everything was sent successfully, or there was a connection error
 	bool bSent = true;
