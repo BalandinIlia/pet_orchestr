@@ -30,10 +30,10 @@ void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket
 	}
 	else
 	{
-		LOG2("Connected to service. Service socket id:", sockService)
+		LOG2("Connected to service. Service socket id:", sockService.value())
 	}
 
-	std::optional<std::vector<number>> aNum = askInner(sockService, num);
+	std::optional<std::vector<number>> aNum = askInner(sockService.value(), num);
 	if(aNum == std::nullopt)
 	{
 		LOG2("Failed to get an answer from cache service", true)

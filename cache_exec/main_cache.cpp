@@ -23,10 +23,10 @@ static std::optional<std::vector<number>> askCalc(number num)
 	}
 	else
 	{
-		LOG2("Connected to service. Service socket id:", sockServ)
+		LOG2("Connected to service. Service socket id:", sockServ.value())
 	}
 
-	const std::optional<std::vector<number>> aNum = askInner(sockServ, num);
+	const std::optional<std::vector<number>> aNum = askInner(sockServ.value(), num);
     
     if(aNum != std::nullopt)
         LOG2("Received an answer from calc service. First number is ", aNum.value()[0])
