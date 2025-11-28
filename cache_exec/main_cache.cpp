@@ -38,7 +38,7 @@ static std::optional<std::vector<number>> askCalc(number num)
 
 static void solveReq(SOCK&& sockReq)
 {
-    setThreadName("Solve request thread");
+    CThreadName tn("Solve request thread");
 
     const std::optional<number> reqNum = getReqInner(sockReq);
     if(reqNum == std::nullopt)
@@ -85,7 +85,7 @@ static void solveReq(SOCK&& sockReq)
 
 int main()
 {
-    setThreadName("Main thread");
+    CThreadName tn("Main thread");
     LOG1(std::string("Starting cache container"));
 
     CInteractKuberentes::start();

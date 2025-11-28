@@ -11,7 +11,7 @@
 
 int main()
 {
-    setThreadName("Main thread");
+    CThreadName tn("Main thread");
     LOG1(std::string("Starting networking container"))
 
     CInteractKuberentes::start();

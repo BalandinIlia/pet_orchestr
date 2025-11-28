@@ -24,7 +24,7 @@ static std::vector<number> doCalc(number num)
 
 static void solveReq(SOCK&& id)
 {
-    setThreadName("Solve request thread");
+    CThreadName tn("Solve request thread");
     const std::optional<number> reqNum = getReqInner(id);
     if(reqNum == std::nullopt)
     {
@@ -39,7 +39,7 @@ static void solveReq(SOCK&& id)
 
 int main()
 {
-    setThreadName("Main thread");
+    CThreadName tn("Main thread");
     LOG1(std::string("Starting calc container"))
 
     CInteractKuberentes::start();

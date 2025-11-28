@@ -40,4 +40,8 @@ void log(const char* fn, const std::string& s, const std::vector<number>& v, boo
 #define LOG3(a1, a2, a3) {log(__func__, (a1), (a2), (a3));}
 
 // Sets name for the current thread
-void setThreadName(const std::string& name);
+class CThreadName
+{
+    CThreadName(const std::string& name);
+    ~CThreadName();
+};

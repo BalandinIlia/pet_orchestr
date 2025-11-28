@@ -19,7 +19,7 @@
 /// <param name="idClient"> in. Client id (for logging) </param>
 void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket, int idClient)
 {
-	setThreadName("Case thread");
+	CThreadName tn("Case thread");
 	LOG2("Starting solving a case for number", num)
 
 	const std::optional<SOCK> sockService = connectToService();
@@ -135,7 +135,7 @@ private:
 
 void serveClient(SOCK&& sock, int idClient)
 {
-	setThreadName("Client thread");
+	CThreadName tn("Client thread");
 	LOG1("Starting serving a client")
 
 	CThreadClient thr(std::move(sock), idClient);

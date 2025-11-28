@@ -19,18 +19,20 @@ public:
     {
         std::unique_lock lk(m_mut);
 
-        // How many threads with the same name are already registered?
-        int quant = 0;
-        for(auto& iter: m_map)
-        {
-            const std::string& curName = iter.second.first;
-            if(curName == name)
-                quant++;
-        }
-
         // register this thread with the next free number
         const std::thread::id idThread = std::this_thread::get_id();
-        m_map[idThread] = std::pair<std::string, int>(name, quant+1);
+        // thread number
+        const int thrNum = (m_mapNameNum.find(name) == m_mapNameNum.end()) ? 1 : m_mapNameNum[name]+1;        
+        m_mapIdData[idThread] = std::pair<std::string, int>(name, thrNum);
+        m_mapNameNum[name] = thrNum;
+    }
+
+    static void deregisterThisThread()
+    {
+        std::unique_lock lk(m_mut);
+        // register this thread with the next free number
+        const std::thread::id idThread = std::this_thread::get_id();
+        m_mapIdData.erase(idThread);
     }
 
     // get info about the current thread
@@ -39,8 +41,8 @@ public:
         const std::thread::id idThread = std::this_thread::get_id();
 
         std::shared_lock l(m_mut);
-        if(m_map.find(idThread) != m_map.end())
-            return m_map[idThread];
+        if(m_mapIdData.find(idThread) != m_mapIdData.end())
+            return m_mapIdData[idThread];
         else
             return std::pair<std::string, int>("no_name", -1);
     }
@@ -48,13 +50,17 @@ public:
 private:
     // registered threads
     // thread system id -> (thread name, thread number)
-    static std::map<std::thread::id, std::pair<std::string, int>> m_map;
+    static std::map<std::thread::id, std::pair<std::string, int>> m_mapIdData;
 
-    // mutex protecting the map
+    // thread name -> last number used for the thread
+    static std::map<std::string, int> m_mapNameNum;
+
+    // mutex protecting the maps
     static std::shared_mutex m_mut;
 };
 
-std::map<std::thread::id, std::pair<std::string, int>> CThreadInfo::m_map;
+std::map<std::thread::id, std::pair<std::string, int>> CThreadInfo::m_mapIdData;
+std::map<std::string, int> CThreadInfo::m_mapNameNum;
 std::shared_mutex CThreadInfo::m_mut;
 
 // Mutex protecting the console (logs are outputted to the console)
@@ -143,7 +149,12 @@ void log(const char* fn, const std::string& s1, const std::vector<number>& v, bo
     logImpl(fn, mes.str(), bError);
 }
 
-void setThreadName(const std::string& name)
+CThreadName::CThreadName(const std::string& name)
 {
     CThreadInfo::registerThisThread(name);
+}
+
+CThreadName::~CThreadName()
+{
+    CThreadInfo::deregisterThisThread();
 }
