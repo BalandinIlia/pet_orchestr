@@ -42,6 +42,13 @@ void log(const char* fn, const std::string& s, const std::vector<number>& v, boo
 // Sets name for the current thread
 class CThreadName
 {
+public:
     CThreadName(const std::string& name);
+
+    CThreadName(const CThreadName& inst) = delete;
+    CThreadName& operator=(const CThreadName& inst) = delete;
+    CThreadName(CThreadName&& inst) = delete;
+    CThreadName& operator=(CThreadName&& inst) = delete;
+
     ~CThreadName();
 };
