@@ -37,8 +37,8 @@ SOCK& SOCK::operator=(SOCK&& inst)
 
 SOCK SOCK::acceptS() const
 {
-    SOCKET t = *this;
-    SOCKET acc = accept(t, nullptr, nullptr);
+    const SOCKET t = *this;
+    const SOCKET acc = accept(t, nullptr, nullptr);
     SOCK ans;
     ans.m_id = acc;
     return std::move(ans);
@@ -53,7 +53,7 @@ SOCK::~SOCK()
 static std::optional<SOCK> listenPort(TCPPort port)
 {
     const SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (idSocket <= 0)
+    if (idSocket < 0)
     {
         LOG3("Failed to create a listening port (socket function) at", port, true);
         return std::nullopt;
@@ -142,10 +142,8 @@ void CInteractKuberentes::informLive()
 bool CInteractKuberentes::m_live = true;
 std::mutex CInteractKuberentes::m_mutLive;
 
-SOCK connectToService()
+std::optional<SOCK> connectToService()
 {
-    LOG1("connectToService function started")
-    
     const std::string nameDNS(std::getenv("SERVICE"));
     LOG2("DNS address", nameDNS)
     const std::string port(std::getenv("SERVICE_PORT"));
@@ -157,19 +155,34 @@ SOCK connectToService()
     addrinfo* pRes = nullptr;
     const int resDNS = getaddrinfo(nameDNS.c_str(), port.c_str(), &constrain, &pRes);
     if(resDNS != 0)
+    {
         LOG3("getaddrinfo returned", resDNS, true)
+        return std::nullopt;
+    }
     if(pRes == nullptr)
+    {
         LOG2("Failed to resolve DNS", true)
-
+        return std::nullopt;
+    }
     const addrinfo& res = *pRes;
     if(res.ai_next != nullptr)
+    {
         LOG2("More than 1 resolution", true)
+        return std::nullopt;
+    }
 
     const SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if(idSocket < 0)
+    {
+        LOG3("Socket id", idSocket, true)
+        return std::nullopt;
+    }
     const int resCon = connect(idSocket, res.ai_addr, res.ai_addrlen);
     if(resCon != 0)
+    {
         LOG3("connect returned ", resCon, true)
+        return std::nullopt;
+    }
 
-    LOG1("connectToService function finished")
     return CSOCKFactory::make(idSocket);
 }

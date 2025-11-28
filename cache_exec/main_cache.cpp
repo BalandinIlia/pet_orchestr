@@ -15,8 +15,16 @@ static std::shared_mutex mutCache;
 
 static std::optional<std::vector<number>> askCalc(number num)
 {
-	const SOCK sockServ = connectToService();
-	LOG2("Service socket id", sockServ)
+	const std::optional<SOCK> sockServ = connectToService();
+    if(sockServ == std::nullopt)
+	{
+		LOG2("Failed to connect to service", true)
+		return;
+	}
+	else
+	{
+		LOG2("Connected to service. Service socket id:", sockServ)
+	}
 
 	const std::optional<std::vector<number>> aNum = askInner(sockServ, num);
     

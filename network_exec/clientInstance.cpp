@@ -22,10 +22,18 @@ void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket
 	setThreadName("Case thread");
 	LOG2("Starting solving a case for number", num)
 
-	SOCK idSocketService = connectToService();
-	LOG2("Service socket id", idSocketService)
+	const std::optional<SOCK> sockService = connectToService();
+	if(sockService == std::nullopt)
+	{
+		LOG2("Failed to connect to service", true)
+		return;
+	}
+	else
+	{
+		LOG2("Connected to service. Service socket id:", sockService)
+	}
 
-	std::optional<std::vector<number>> aNum = askInner(idSocketService, num);
+	std::optional<std::vector<number>> aNum = askInner(sockService, num);
 	if(aNum == std::nullopt)
 	{
 		LOG2("Failed to get an answer from cache service", true)

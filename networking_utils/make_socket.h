@@ -51,4 +51,4 @@ private:
     static std::mutex m_mutLive;
 };
 
-SOCK connectToService();
+std::optional<SOCK> connectToService();
