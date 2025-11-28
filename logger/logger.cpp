@@ -89,7 +89,6 @@ static void logImpl(const char* fn, const std::string& log, bool bError)
     mes << "      ";
     mes << "Message: ";
     mes << log;
-    mes << "\n";
 
     const std::string out = mes.str();
     LG lk(mutCons);
