@@ -8,6 +8,17 @@
 #include "../networking_utils/send_receive.h"
 #include "runner.h"
 
+class CSOCKFactory
+{
+public:
+    static SOCK make(SOCKET id)
+    {
+        SOCK ans;
+        ans.m_id = id;
+        return std::move(ans);
+    }
+};
+
 static SOCK sockClient()
 {
     SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
