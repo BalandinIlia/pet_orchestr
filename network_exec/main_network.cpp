@@ -6,7 +6,6 @@
 #include "../networking_utils/send_receive.h"
 #include "../networking_utils/make_socket.h"
 #include "../logger/logger.h"
-#include "unistd.h"
 #include "clientInstance.h"
 
 int main()
