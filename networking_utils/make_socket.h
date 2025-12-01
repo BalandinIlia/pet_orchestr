@@ -8,7 +8,7 @@
 class CSOCKFactory;
 
 // Instance of this class owns a TCP socket.
-// The class makes sure that the socket is closed after it is now used anymore.
+// The class makes sure that the socket is closed after it is not used anymore.
 // Class is named "SOCK". This is an abbreviation from "socket".
 class SOCK
 {
@@ -47,9 +47,6 @@ friend class CSOCKFactory;
 // This function creates a listening socket. The socket listens for incoming work connections.
 // If socket creation fails, std::nullopt is returned.
 std::optional<SOCK> listenInfo();
-
-// Function for the client. The function connects to the server and returns the connection socket.
-SOCK sockClient();
 
 // This class manages interaction with kubernetes: it manages response to kubernetes liveness probe.
 class CInteractKuberentes

@@ -57,7 +57,7 @@ static std::optional<SOCK> listenPort(TCPPort port)
     const SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (idSocket < 0)
     {
-        LOG3("Failed to create a listening port (socket function) at", port, true);
+        LOG2("Failed to create a socket", true);
         return std::nullopt;
     }
 
@@ -67,13 +67,13 @@ static std::optional<SOCK> listenPort(TCPPort port)
     serverAddr.sin_port = htons(port);
     if(bind(idSocket, reinterpret_cast<sockaddr*>(&serverAddr), sizeof(serverAddr)) != 0)
     {
-        LOG3("Failed to create a listening port (bind function) at", port, true);
+        LOG3("Failed to bind a socket at port", port, true);
         return std::nullopt;
     }
 
     if(listen(idSocket, SOMAXCONN) != 0)
     {
-        LOG3("Failed to create a listening port (listen function) at", port, true);
+        LOG3("Failed to listen a socket at port", port, true);
         return std::nullopt;
     }
 
@@ -83,19 +83,6 @@ static std::optional<SOCK> listenPort(TCPPort port)
 std::optional<SOCK> listenInfo()
 {
     return listenPort(portInfo);
-}
-
-SOCK sockClient()
-{
-    SOCKET idSocket = socket(AF_INET, SOCK_STREAM, 0);
-
-    sockaddr_in serverAddr{};
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-    serverAddr.sin_port = htons(portInfo);
-    connect(idSocket, reinterpret_cast<sockaddr*>(&serverAddr), sizeof(serverAddr));
-
-    return CSOCKFactory::make(idSocket);
 }
 
 void CInteractKuberentes::start()
@@ -145,7 +132,7 @@ void CInteractKuberentes::informLive()
         else
             break;
     }
-    LOG1("finishing the function")
+    LOG1("liveness signal is terminated")
 }
 
 bool CInteractKuberentes::m_live = true;
@@ -157,7 +144,7 @@ std::optional<SOCK> connectToService()
     LOG2("DNS address", nameDNS)
     const std::string port(std::getenv("SERVICE_PORT"));
     LOG2("Port", port)
- 
+
     addrinfo constrain{};
     constrain.ai_family = AF_INET;
     constrain.ai_socktype = SOCK_STREAM;
