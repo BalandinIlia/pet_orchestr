@@ -4,7 +4,7 @@
 
 namespace IC
 {
-    std::optional<std::vector<number>> askInner(const SOCK& id, number num)
+    std::optional<std::vector<number>> ask(const SOCK& id, number num)
     {
         LOG2("Inner communication: asking service for number", num)
         
@@ -31,7 +31,7 @@ namespace IC
         return ans;
     }
 
-    bool answerInner(const SOCK& id, const std::vector<number>& ans)
+    bool answer(const SOCK& id, const std::vector<number>& ans)
     {
         bool bOk = true;
         for(const number& n: ans)
@@ -40,7 +40,7 @@ namespace IC
         return bOk;
     }
 
-    std::optional<number> getReqInner(const SOCK& id)
+    std::optional<number> getReq(const SOCK& id)
     {
         return recvNum(id);
     }
