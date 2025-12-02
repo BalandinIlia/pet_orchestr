@@ -55,6 +55,7 @@ public:
     // Start responding to kubernetes liveness probe.
     static void start();
     // Terminate responding to kubernetes liveness probe. Once done this function can't be undone.
+    // Once called, this function makes the container to restart
     static void terminateLive();
 
 private:

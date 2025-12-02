@@ -10,17 +10,25 @@
 #include "clientInstance.h"
 
 /// <summary>
-/// This function solves a request from a particular client: it calculates the answer and sends it over TCP.
+/// This function solves a request from a particular client: 
+/// it gets the answer and sends it over TCP.
 /// </summary>
-/// <param name="id"> in. Request id </param>
+/// <param name="idReq"> in. Request id </param>
 /// <param name="num"> in. Request body </param>
-/// <param name="idSocket"> in. Socket id </param>
-/// <param name="mutSocket"> in. Socket mutex: the mutex which need to be locked before sending data through socket </param>
+/// <param name="sock"> in. Socket </param>
+/// <param name="mutSocket"> in. 
+/// Socket mutex: the mutex which need to be locked before sending data through socket 
+/// </param>
 /// <param name="idClient"> in. Client id (for logging) </param>
-void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket, int idClient)
+void solveCase(short idReq, number num, const SOCK& sock, std::mutex* mutSocket, int idClient)
 {
 	CThreadName tn("Case thread");
-	LOG2("Starting solving a case for number", num)
+	{
+		std::ostringstream mes;
+		mes << "Working with client " << idClient << " starting solving case with number " 
+			<< num << " and id " << idReq;
+		LOG1(mes.str())
+	}
 
 	const std::optional<SOCK> sockService = connectToService();
 	if(sockService == std::nullopt)
@@ -29,9 +37,7 @@ void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket
 		return;
 	}
 	else
-	{
 		LOG2("Connected to service. Service socket id:", sockService.value())
-	}
 
 	std::optional<std::vector<number>> aNum = IC::ask(sockService.value(), num);
 	if(aNum == std::nullopt)
@@ -46,21 +52,21 @@ void solveCase(short id, number num, const SOCK& idSocket, std::mutex* mutSocket
 	bool bSent = true;
 	if (aNum.value().empty())
 	{
-		std::array<char, 3> buf = MS::serializeAnsNo(id);
+		std::array<char, 3> buf = MS::serializeAnsNo(idReq);
 		LG lk(*mutSocket);
-		bSent = sendAll(idSocket, buf.data(), 3);
+		bSent = sendAll(sock, buf.data(), 3);
 	}
 	else
 	{
-		std::vector<char> buf = MS::serializeAnsYes(aNum.value(), id);
+		std::vector<char> buf = MS::serializeAnsYes(aNum.value(), idReq);
 		LG lk(*mutSocket);
-		bSent = sendAll(idSocket, buf.data(), static_cast<int>(buf.size()));
+		bSent = sendAll(sock, buf.data(), static_cast<int>(buf.size()));
 	}
 
 	if(!bSent)
 	{
 		std::ostringstream mes;
-		mes << "Unable to sent an answer to client " << idClient << " for request with id " << id << " due to network error";
+		mes << "Unable to sent an answer to client " << idClient << " for request with id " << idReq << " due to network error";
 		LOG2(mes.str(), true)
 	}
 }
@@ -97,10 +103,11 @@ public:
 			}
 			else
 			{
+				// buf means "buffer"
 				std::array<char, 10> buf;
 				if(!recvAll(m_sock, buf.data(), 10))
 				{
-					LOG2("Client sent a broken message", true)
+					LOG2("Unable to get a message from the client", true)
 					break;
 				}
 
@@ -123,22 +130,24 @@ public:
 	}
 
 private:
+	// served socket
 	SOCK m_sock;
 
+	// client id
 	int m_idClient;
 
 	// mutex for sending data by socket
-	// This mutex is necessary because several threads may be sending data simultaneously and this mutex prevents
-	// this data from mixturing
+	// This mutex is necessary because several threads may be sending data simultaneously and
+	// this mutex prevents this data from mixturing
 	std::mutex m_mutSend;
 };
 
 void serveClient(SOCK&& sock, int idClient)
 {
 	CThreadName tn("Client thread");
-	LOG1("Starting serving a client")
+	LOG2("Starting serving a client with id", idClient)
 
 	CThreadClient thr(std::move(sock), idClient);
 	thr.run();
-	LOG1("Finished serving a client")
+	LOG1("Finished serving a client with id", idClient)
 }
