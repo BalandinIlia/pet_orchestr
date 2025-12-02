@@ -26,6 +26,12 @@ jobs:
         name: client
         path: executables/client
 
+    - name: Upload deployment
+      uses: actions/upload-artifact@v4
+      with:
+        name: deployment.yaml
+        path: deployment.yaml
+
     - name: Build docker
       run: |
         cd docker
